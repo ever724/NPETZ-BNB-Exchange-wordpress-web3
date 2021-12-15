@@ -122,8 +122,8 @@ function exchange(){
     }else{
         console.log("there is an error!")
     }
-    $("#from-value").val("");
-    $("#to-value").val("");
+    $("#from-input").val("");
+    $("#to-input").val("");
 }
 
 function BigNumberToPlain(num) {
