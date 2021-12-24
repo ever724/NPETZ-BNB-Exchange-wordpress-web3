@@ -1,3 +1,5 @@
+
+
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const EvmChains = window.EvmChains;
@@ -7,7 +9,7 @@ let web3Modal
 let provider;
 let selectedAccount;
 // let buttonId;
-const chainId = 97;
+const chainId = 56;
 
 function init() {
 
@@ -64,6 +66,7 @@ async function fetchAccountData() {
     $("#connect_wallet").text(wallet_label);
   });
   await Promise.all(rowResolvers);
+  refresh_view_data();
 }
 
 async function refreshAccountData() {
@@ -81,19 +84,16 @@ async function onConnect() {
   // Subscribe to accounts change
   provider.on("accountsChanged", (accounts) => {
     fetchAccountData();
-    refresh_view_data();
   });
 
   // Subscribe to chainId change
   provider.on("chainChanged", (chainId) => {
     fetchAccountData();
-    refresh_view_data();
   });
 
   // Subscribe to networkId change
   provider.on("networkChanged", (networkId) => {
     fetchAccountData();
-    refresh_view_data();
   });
 
   await refreshAccountData();
@@ -110,19 +110,23 @@ async function onDisconnect() {
 
     selectedAccount = null;
     $("#connect_wallet").text("Connect");
-    $("#from-balance").text("0");
-    $("#to-balance").text("0");
+    $("#from-input").val("");
+    $("#to-input").val("");
+    $("#from-balance").val("");
+    $("#to-balance").val("");
     $("#from-label").text("BNB");
     $("#to-label").text("NPETZ");
     $("#purchased-value").text("0");
     $("#available-value").text("0");
+
+    refresh_view_data();
 }
 
 function get_contract_addr(chainId ){
     if (chainId == 3 ){
         return testLockToken;
     }else if (chainId == 56 ){
-        return testLockToken;
+        return Token;
     }else if(chainId == 97 ){
         return testLockToken;
     }
@@ -150,7 +154,13 @@ async function buyNPETZ(amount){
     const bep20Contract = await get_bep20_contract();
     await bep20Contract.methods
         .buyNPETZ()
-        .send({ from: selectedAccount, value: _amount });
+        .send({ from: selectedAccount, value: _amount })
+        .on('receipt', function(receipt ){
+          toastr.success("successfully buy!");
+        })
+        .on('error', function(err){
+          toastr.error("failed");
+        });
     refresh_view_data();
     // Toast.fire({ icon: 'success', titleText: 'Successfully buy' });
 };
@@ -163,7 +173,13 @@ async function sellNPETZ(amount){
     const bep20Contract = await get_bep20_contract();
     await bep20Contract.methods
         .sellNPETZ(_amount)
-        .send({ from: selectedAccount });
+        .send({ from: selectedAccount })
+        .on('receipt', function(receipt ){
+          toastr.success("successfully sell!");
+        })
+        .on('error', function(err){
+          toastr.error("failed");
+        });
     refresh_view_data();
     // Toast.fire({ icon: 'success', titleText: 'Successfully sell' });
 };

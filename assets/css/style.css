@@ -197,7 +197,19 @@ body {
     padding-top: 3px;
 }
 
-
+/* admin panel */
+.display-on {
+    display: block;
+}
+.display-off {
+    display: none;
+}
+.whitelist-header {
+    color: black !important;
+}
+.whitelist-content {
+    color: black !important;
+}
 
 /* Footer section styling */
 

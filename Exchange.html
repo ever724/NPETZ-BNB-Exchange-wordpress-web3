@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="assets/css/bootstrap.css">
         <!-- <link rel="stylesheet" href="assets/css/font-awesome.css"> -->
         <link rel="stylesheet" href="assets/font-awesome/css/font-awesome.css">
+        <link rel="stylesheet" href="assets/css/toastr.css">
         <link rel="stylesheet" href="assets/css/style.css">
 	</head>
 	<body>
@@ -23,82 +24,192 @@
         <div class="col-md-3"></div>
         <div class="col-md-6">
           <div class="card card-cs p-4 outside-card">
-            <div class="card card-cs p-4 m-b-20 middle-card">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="card card-cs p-4 inner-card">
-                    <div class="row">
-                      <div class="col-md-3">
-                        <h6>From</h6>
+            <div id="user-panel" class="user-panel display-on">
+              <div class="card card-cs p-4 m-b-20 middle-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card card-cs p-4 inner-card">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <h6>From</h6>
+                        </div>
+                        <div class="col-md-9 text-right">
+                          <h6>Balance: <span id="from-balance">0</span></h6>
+                        </div>
                       </div>
-                      <div class="col-md-9 text-right">
-                        <h6>Balance: <span id="from-balance">0</span></h6>
+                      <div class="row mt-2">
+                        <div class="col-md-9">
+                          <input type="text" id="from-input" class="form-control from-input input-box" placeholder="0.0" />
+                        </div>
+                        <div id="from-label" class="col-md-3 text-right line-height-34">BNB</div>
                       </div>
-                    </div>
-                    <div class="row mt-2">
-                      <div class="col-md-9">
-                        <input type="text" id="from-input" class="form-control from-input input-box" placeholder="0.0" />
-                      </div>
-                      <div id="from-label" class="col-md-3 text-right line-height-34">BNB</div>
                     </div>
                   </div>
+                </div>
+
+                <div class="row center">
+                  <button id="toggle-btn" class="btn col-md-12">
+                    <i class='fa fa-long-arrow-down' aria-hidden="true"></i>
+                    <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+                      <!-- Toggle Direction -->
+                  </button>
+                </div>
+        
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card card-cs p-4 inner-card">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <h6>To</h6>
+                        </div>
+                        <div class="col-md-9 text-right">
+                          <h6>Balance: <span id="to-balance">0</span></h6>
+                        </div>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-md-9">
+                          <input id="to-input" class="form-control to-input input-box" placeholder="0.0" type="text" />
+                        </div>
+                        <div id="to-label" class="col-md-3 text-right line-height-34">NPETZ</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row center m-t-20 exchange-box">
+                  <button id="exchange-btn" class="btn col-md-12 btn-exchange">Exchange</button>
                 </div>
               </div>
 
-              <div class="row center">
-                <button id="toggle-btn" class="btn col-md-12">
-                  <i class='fa fa-long-arrow-down' aria-hidden="true"></i>
-                  <i class="fa fa-long-arrow-up" aria-hidden="true"></i>
-                    <!-- Toggle Direction -->
-                </button>
-              </div>
-      
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="card card-cs p-4 inner-card">
-                    <div class="row">
-                      <div class="col-md-3">
-                        <h6>To</h6>
+              <div class="card card-cs p-4 middle-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card card-cs p-4 inner-card">
+                      
+                      <div class="row mt-2">
+                        <div class="col-md-12">
+                          <span id="purchased-label">Puchased Token:</span>
+                          <span id="purchased-value">0</span>
+                        </div>
                       </div>
-                      <div class="col-md-9 text-right">
-                        <h6>Balance: <span id="to-balance">0</span></h6>
+                      <div class="row mt-2">
+                        <div class="col-md-12">
+                          <span id="available-label">Available Token:</span>
+                          <span id="available-value">0</span>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row mt-2">
-                      <div class="col-md-9">
-                        <input id="to-input" class="form-control to-input input-box" placeholder="0.0" type="text" />
-                      </div>
-                      <div id="to-label" class="col-md-3 text-right line-height-34">NPETZ</div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="row center m-t-20 exchange-box">
-                <button id="exchange-btn" class="btn col-md-12 btn-exchange">Exchange</button>
               </div>
             </div>
 
-            <div class="card card-cs p-4 middle-card">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="card card-cs p-4 inner-card">
-                    
-                    <div class="row mt-2">
-                      <div class="col-md-12">
-                        <span id="purchased-label">Puchased Token:</span>
-                        <span id="purchased-value">0</span>
+            <div id="admin-panel" class=" admin-panel display-off">
+              <div class="card card-cs p-4 m-b-20 middle-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card card-cs p-4 inner-card">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <h6>Set Exchange Rate</h6>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <h6>Current: <span id="token-price">0</span> per BNB</h6>
+                        </div>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-md-9">
+                          <input type="text" id="token-price-input" class="form-control from-input input-box" placeholder="" />
+                        </div>
                       </div>
                     </div>
-                    <div class="row mt-2">
-                      <div class="col-md-12">
-                        <span id="available-label">Available Token:</span>
-                        <span id="available-value">0</span>
+                  </div>
+                </div>
+
+                <div class="row center m-t-20 exchange-box">
+                  <button id="set-price-btn" class="btn col-md-12 btn-exchange">Set Exchange Rate</button>
+                </div>
+              </div>
+
+              <div class="card card-cs p-4 m-b-20 middle-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card card-cs p-4 inner-card">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <h6>Set Supply Limit</h6>
+                        </div>
+                        <div class="col-md-6 text-right">
+                          <h6>Current: <span id="max-supply">0</span></h6>
+                        </div>
                       </div>
+                      <div class="row mt-2">
+                        <div class="col-md-9">
+                          <input type="text" id="max-supply-input" class="form-control from-input input-box" placeholder="" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row center m-t-20 exchange-box">
+                  <button id="max-supply-btn" class="btn col-md-12 btn-exchange">Set Max Supply</button>
+                </div>
+              </div>
+
+              <div class="card card-cs p-4 m-b-20 m-t-20 middle-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card card-cs p-4 inner-card">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h6>WhiteList Insert</h6>
+                        </div>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-md-9">
+                          <input id="white-insert" class="form-control to-input input-box" placeholder="" type="text" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row center m-t-20 exchange-box">
+                  <button id="white-insert-btn" class="btn col-md-12 btn-exchange">Insert</button>
+                </div>
+              </div>
+              <div class="card card-cs p-4 m-b-20 m-t-20 middle-card">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card card-cs p-4 inner-card">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <h6>Blacklist Remove</h6>
+                        </div>
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-md-9">
+                          <input id="white-remove" class="form-control to-input input-box" placeholder="" type="text" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row center m-t-20 exchange-box">
+                  <button id="white-remove-btn" class="btn col-md-12 btn-exchange">Remove</button>
+                </div>
+              </div>
+              <div class=" p-4 m-b-20 m-t-20 middle-card">
+                <div class="row">
+                  <div class="col-md-12 text-center">
+                    <h3 class="whitelist-header">Whitelisted Users</h3>
+                    <div id="whitelist-content" class="whitelist-header">
+                      <p>There is no user in the whitelist</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            
             
           </div>
         </div>
@@ -113,6 +224,7 @@
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/8.0.2/bignumber.min.js"></script> -->
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/bootstrap.js"></script>
+        <script src="assets/js/toastr.js"></script>
         <script src="assets/js/config.js"></script>
         <script src="assets/js/web3service.js"></script>
 		    <script src="assets/js/index.js"></script>
