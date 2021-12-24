@@ -15,29 +15,29 @@ const decimalOnly = /^\s*-?[0-9]\d*(\.\d{1,26})?\s*/;
 
 
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
     console.log("initialize");
 
     initialLoad = false;
 
     init();
     buttonId = "#connect_wallet";
-    $("#connect_wallet").on("click", connect_wallet);
+    jQuery("#connect_wallet").on("click", connect_wallet);
 
-    $("#toggle-btn").on("click", toggleExchangeDirection);
-    $("#exchange-btn").on("click", exchange);
-    $("#from-input").on("input", from_input_change);
-    $("#to-input").on("input", to_input_change);
+    jQuery("#toggle-btn").on("click", toggleExchangeDirection);
+    jQuery("#exchange-btn").on("click", exchange);
+    jQuery("#from-input").on("input", from_input_change);
+    jQuery("#to-input").on("input", to_input_change);
 
-    $("#set-price-btn").on("click", set_price);
-    $("#max-supply-btn").on("click", set_maxsupply);
-    $("#white-insert-btn").on("click", whitelist_insert);
-    $("#white-remove-btn").on("click", whitelist_remove);
+    jQuery("#set-price-btn").on("click", set_price);
+    jQuery("#max-supply-btn").on("click", set_maxsupply);
+    jQuery("#white-insert-btn").on("click", whitelist_insert);
+    jQuery("#white-remove-btn").on("click", whitelist_remove);
 });
 
 function connect_wallet(){
-    $("#from-input").val("");
-    $("#to-input").val("");
+    jQuery("#from-input").val("");
+    jQuery("#to-input").val("");
     if (!selectedAccount){
         onConnect();
     }else{
@@ -52,32 +52,32 @@ async function refresh_view_data(){
         owner = await bep20_contract.methods.owner().call();
         if(owner == selectedAccount){
             console.log("you are owner", selectedAccount)
-            $("#user-panel")[0].classList.add("display-off");
-            $("#user-panel")[0].classList.remove("display-on");
-            $("#admin-panel")[0].classList.add("display-on");
-            $("#admin-panel")[0].classList.remove("display-off");
+            jQuery("#user-panel")[0].classList.add("display-off");
+            jQuery("#user-panel")[0].classList.remove("display-on");
+            jQuery("#admin-panel")[0].classList.add("display-on");
+            jQuery("#admin-panel")[0].classList.remove("display-off");
         }else {
             console.log("you are not owner", selectedAccount)
-            $("#user-panel")[0].classList.add("display-on");
-            $("#user-panel")[0].classList.remove("display-off");
-            $("#admin-panel")[0].classList.add("display-off");
-            $("#admin-panel")[0].classList.remove("display-on");
+            jQuery("#user-panel")[0].classList.add("display-on");
+            jQuery("#user-panel")[0].classList.remove("display-off");
+            jQuery("#admin-panel")[0].classList.add("display-off");
+            jQuery("#admin-panel")[0].classList.remove("display-on");
         }
         // token price
         token_price = await bep20_contract.methods.getBuyDexRate().call();
-        $("#token-price").text(token_price);
+        jQuery("#token-price").text(token_price);
         
         //max supply limit
         const maxsupplylimit = await bep20_contract.methods.getmaxUserSupplyLimit().call();
-        $("#max-supply").text(BigNumberToPlain(maxsupplylimit));
+        jQuery("#max-supply").text(BigNumberToPlain(maxsupplylimit));
         //whitelist
         whitelist = await bep20_contract.methods.get_whitelisted_user().call();
         console.log("whitelist", whitelist);
-        $("#whitelist-content").empty();
+        jQuery("#whitelist-content").empty();
         for(i=0; i<whitelist.length; i++){
             console.log("whitelist", whitelist[i]);
             if(whitelist[i] == "0x0000000000000000000000000000000000000000") break;
-            $("#whitelist-content").append("<p>" + whitelist[i] + "</p>")
+            jQuery("#whitelist-content").append("<p>" + whitelist[i] + "</p>")
         }
         //total supply   
         const total_supply = await bep20_contract.methods.totalSupply().call();
@@ -98,25 +98,25 @@ async function refresh_view_data(){
         console.log("token_balance", token_balance);
 
         if(exchangeDirection){
-            $("#from-balance").text(bnb_balance / 10 ** 18);
-            $("#to-balance").text(user_purchased / 10 ** 18);
-            $("#from-label").text("BNB");
-            $("#to-label").text("NPETZ");
+            jQuery("#from-balance").text(bnb_balance / 10 ** 18);
+            jQuery("#to-balance").text(user_purchased / 10 ** 18);
+            jQuery("#from-label").text("BNB");
+            jQuery("#to-label").text("NPETZ");
         }else{
-            $("#from-balance").text(user_purchased / 10 ** 18);
-            $("#to-balance").text(bnb_balance / 10 ** 18);
-            $("#from-label").text("NPETZ"); 
-            $("#to-label").text("BNB");
+            jQuery("#from-balance").text(user_purchased / 10 ** 18);
+            jQuery("#to-balance").text(bnb_balance / 10 ** 18);
+            jQuery("#from-label").text("NPETZ"); 
+            jQuery("#to-label").text("BNB");
         }
-        $("#purchased-value").text(user_purchased / 10 ** 18);
-        $("#available-value").text(BigNumberToPlain(available / 10 ** 18));
+        jQuery("#purchased-value").text(user_purchased / 10 ** 18);
+        jQuery("#available-value").text(BigNumberToPlain(available / 10 ** 18));
         
     }
 }
 
 async function toggleExchangeDirection() {
-    $("#from-input").val("");
-    $("#to-input").val("");
+    jQuery("#from-input").val("");
+    jQuery("#to-input").val("");
     const bep20_contract = await get_bep20_contract();
     if(bep20_contract){
         exchangeDirection = exchangeDirection ? 0 : 1;
@@ -127,12 +127,12 @@ async function toggleExchangeDirection() {
 }
 
 function from_input_change(){
-    from_value = $("#from-input").val();
+    from_value = jQuery("#from-input").val();
     // from_value = Number(from_value);
     console.log("decimalOnly.test(from_value)", decimalOnly.test(from_value));
     if (!decimalOnly.test(from_value)){
         console.log("please insert number");
-        $("#to-input").val("");
+        jQuery("#to-input").val("");
         error_flag = 1;
     }else{
         if(exchangeDirection){
@@ -143,9 +143,9 @@ function from_input_change(){
 
         if(typeof to_value == NaN){
             error_flag = 1;
-            $("#to-input").val("");
+            jQuery("#to-input").val("");
         }else{
-            $("#to-input").val(to_value);
+            jQuery("#to-input").val(to_value);
             error_flag = 0;
             console.log("to_value", to_value)
         }
@@ -154,11 +154,11 @@ function from_input_change(){
 }
 
 function to_input_change(){
-    to_value = $("#to-input").val();
+    to_value = jQuery("#to-input").val();
     // to_value = Number(to_value);
     if (!decimalOnly.test(to_value)){
         console.log("please insert number");
-        $("#from-input").val("");
+        jQuery("#from-input").val("");
         error_flag = 1;
     }else{
         if(exchangeDirection){
@@ -169,9 +169,9 @@ function to_input_change(){
 
         if(to_value == "NaN"){
             error_flag = 1;
-            $("#from-input").val("");
+            jQuery("#from-input").val("");
         }else{
-            $("#from-input").val(from_value);
+            jQuery("#from-input").val(from_value);
             error_flag = 0;
             console.log("from-input", from_value)
         }
@@ -219,7 +219,7 @@ function BigNumberToPlain(num) {
 // web3
 
 async function set_price(){
-    var _price =  $("#token-price-input").val();
+    var _price =  jQuery("#token-price-input").val();
     console.log("_price", _price);
     const bep20Contract = await get_bep20_contract();
     await bep20Contract.methods
@@ -237,7 +237,7 @@ async function set_price(){
 }
 
 async function set_maxsupply(){
-    var _maxlimit =  $("#max-supply-input").val();
+    var _maxlimit =  jQuery("#max-supply-input").val();
     console.log("_maxlimit", _maxlimit);
     const bep20Contract = await get_bep20_contract();
     await bep20Contract.methods
@@ -252,7 +252,7 @@ async function set_maxsupply(){
     refresh_view_data();
 }
 async function whitelist_insert(){
-    var _address =  $("#white-insert").val();
+    var _address =  jQuery("#white-insert").val();
     console.log("_address", _address);
     const bep20Contract = await get_bep20_contract();
     await bep20Contract.methods
@@ -268,7 +268,7 @@ async function whitelist_insert(){
 }
 
 async function whitelist_remove(){
-    var _address =  $("#white-remove").val();
+    var _address =  jQuery("#white-remove").val();
     console.log("_address", _address);
     const bep20Contract = await get_bep20_contract();
     await bep20Contract.methods

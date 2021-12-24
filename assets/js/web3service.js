@@ -63,7 +63,7 @@ async function fetchAccountData() {
     const balance = await web3.eth.getBalance(address);
     //const ethBalance = web3.utils.fromWei(balance, "ether");
     var wallet_label = address.slice(0,5) + "..." + address.slice(-5);
-    $("#connect_wallet").text(wallet_label);
+    jQuery("#connect_wallet").text(wallet_label);
   });
   await Promise.all(rowResolvers);
   refresh_view_data();
@@ -109,15 +109,15 @@ async function onDisconnect() {
     }
 
     selectedAccount = null;
-    $("#connect_wallet").text("Connect");
-    $("#from-input").val("");
-    $("#to-input").val("");
-    $("#from-balance").val("");
-    $("#to-balance").val("");
-    $("#from-label").text("BNB");
-    $("#to-label").text("NPETZ");
-    $("#purchased-value").text("0");
-    $("#available-value").text("0");
+    jQuery("#connect_wallet").text("Connect");
+    jQuery("#from-input").val("");
+    jQuery("#to-input").val("");
+    jQuery("#from-balance").val("");
+    jQuery("#to-balance").val("");
+    jQuery("#from-label").text("BNB");
+    jQuery("#to-label").text("NPETZ");
+    jQuery("#purchased-value").text("0");
+    jQuery("#available-value").text("0");
 
     refresh_view_data();
 }
