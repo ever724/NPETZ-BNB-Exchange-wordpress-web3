@@ -9,7 +9,7 @@ let web3Modal
 let provider;
 let selectedAccount;
 // let buttonId;
-const chainId = 56;
+const chainId = 97;
 
 function init() {
 
